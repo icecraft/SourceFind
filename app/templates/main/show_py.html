@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Flasky{% endblock %}
+{% block head %}
+{{ super() }}
+<style type="text/css">
+  pre {
+  line-height:10px; 
+  }
+</style>
+{% endblock %}
+{% block page_content %}
+
+<pre >
+<code>
+  {% for line in contents %}
+  {{line}}
+  {% endfor %}
+</code>
+</pre>
+
+
+{% endblock %}

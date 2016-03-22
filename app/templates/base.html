@@ -1,0 +1,150 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}知乎{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+<link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/solarized_dark.min.css">
+
+<style type="text/css">
+    
+  .navbar-default {
+  background-color: #0663c1;
+  border-color: #065fb6;
+  }
+  .navbar-default .navbar-brand {
+  color: #ecf0f1;
+  }
+  .navbar-default .navbar-brand:hover,
+  .navbar-default .navbar-brand:focus {
+  color: #ffbbbc;
+  }
+  .navbar-default .navbar-text {
+  color: #ecf0f1;
+  }
+  .navbar-default .navbar-nav > li > a {
+  color: #ecf0f1;
+  }
+  .navbar-default .navbar-nav > li > a:hover,
+  .navbar-default .navbar-nav > li > a:focus {
+  color: #ffbbbc;
+  }
+  .navbar-default .navbar-nav > .active > a,
+  .navbar-default .navbar-nav > .active > a:hover,
+  .navbar-default .navbar-nav > .active > a:focus {
+  color: #ffbbbc;
+  background-color: #065fb6;
+  }
+  .navbar-default .navbar-nav > .open > a,
+  .navbar-default .navbar-nav > .open > a:hover,
+  .navbar-default .navbar-nav > .open > a:focus {
+  color: #ffbbbc;
+  background-color: #065fb6;
+  }
+  .navbar-default .navbar-toggle {
+  border-color: #065fb6;
+  }
+  .navbar-default .navbar-toggle:hover,
+  .navbar-default .navbar-toggle:focus {
+  background-color: #065fb6;
+  }
+  .navbar-default .navbar-toggle .icon-bar {
+  background-color: #ecf0f1;
+  }
+  .navbar-default .navbar-collapse,
+  .navbar-default .navbar-form {
+  border-color: #ecf0f1;
+  }
+  .navbar-default .navbar-link {
+  color: #ecf0f1;
+  }
+  .navbar-default .navbar-link:hover {
+  color: #ffbbbc;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu>li>a,.navbar-default .navbar-nav .open .dropdown-menu {
+  background-color: #0663c1;
+  color:#ffffff;
+    }
+  #flask-pagedown-body {
+  height: 400px;
+  }
+  #flask-pagedown-body {
+  border: none;
+  }
+</style>
+{% endblock %}
+
+{% block navbar %}
+<div class="navbar-default" role="navigation">
+  <div class="container">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span> 
+            </button>
+            <a class="navbar-brand" style="font-size:30px" href="{{ url_for('main.index') }}">NoteBook</a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+	  <form class="navbar-form navbar-left" role="search" method="post" action="{{url_for('main.search') }}" >
+	    <div class="form-group">
+	      <input type="text" class="form-control" style="width:280px" placeholder="Search" name="search">
+	    </div>
+	                <button type="submit"  class="btn btn-default" style="background-color: #0663c1;                                          
+									      border-color: #065fb6;">
+			  <span class="glyphicon glyphicon-search" aria-hidden="true" style="color:white"></span>
+			</button>
+	  </form>
+	  
+            <ul class="nav navbar-nav">
+              <li><a href="{{ url_for('main.index') }}">首页</a></li>
+            </ul>
+        </div>
+    </div>	
+    <div class="col-md-1"></div>
+  </div>
+</div>
+{% endblock %}
+
+<div class="container">
+
+    {% block content %}
+	{% for message in get_flashed_messages() %}
+	<div class="alert alert-warning">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          {{ message }}
+	</div>
+	{% endfor %}
+
+	<div class="col-md-2"></div>
+	  
+	<div class="col-md-7">
+	  {% block page_content %}{% endblock %}
+	  {% block user_miscells %}  {% endblock %}
+        </div
+	<div>
+	  {% block rside_bar   %}
+
+	  {% endblock %}
+	</div>
+    {% endblock %}
+</div>
+
+{% block scripts %}
+	{{ super() }}
+	{{pagedown.include_pagedown() }}
+	{{ moment.include_moment() }}
+	<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"> </script>
+	<script>hljs.initHighlightingOnLoad();</script>
+{% endblock %}
+
+
+
+

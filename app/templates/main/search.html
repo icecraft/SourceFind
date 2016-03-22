@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Flasky{% endblock %}
+
+{% block page_content %}
+<ul>
+  {% for filen in filelist %}
+  <li>
+    <a href="{{url_for('main.show_py', filen=filen)}}">
+      {{ filen }}
+      </a>
+  </li>
+  {% endfor %}
+</ul>
+<hr style="border-width:0" />
+<nav>
+  <ul class="pagination">
+    <li>
+      {% if page > 1 %}
+      <a href="{{url_for('main.search', page=page-1, keyword=keyword)}}" aria-label="Previous">
+	<span aria-hidden="true">&laquo;</span>
+      </a>
+      {% else %}
+      <a href="{{url_for('main.search', page=1, keyword=keyword)}}" aria-label="Previous">
+	<span aria-hidden="true">&raquo;</span>
+      </a>
+      {% endif %}
+    </li>
+
+    <li>
+       <a href="{{url_for('main.search', page=1, keyword=keyword)}}"> 首页</a>
+    </li>
+
+    {% if page > 4  %}
+    <li>
+      <a href="#">...</a>
+    </li>
+    {% endif %}
+    {% for num in range(pagenum) %}
+    {% if num+1 == page %}
+    <li class="active">
+      <a href="{{url_for('main.search', page=num+1, keyword=keyword)}}"> {{num+1}}</a>
+    </li>
+    {% elif num+5 > page > num-4 %}
+    <li>
+      <a href="{{url_for('main.search', page=num+1, keyword=keyword)}}"> {{num+1}}</a>
+    </li>
+    {% endif %}
+    {% endfor %}
+
+    {%  if pagenum > page+5  %}
+    <li>
+      <a href="#">...</a>
+    </li>
+    {% endif %}
+
+    <li>
+       <a href="{{url_for('main.search', page=pagenum, keyword=keyword)}}"> 尾页</a>
+    </li>
+
+    <li>
+      {% if pagenum > page %}
+      <a href="{{url_for('main.search', page=page+1, keyword=keyword)}}" aria-label="Previous">
+	<span aria-hidden="true">&laquo;</span>
+      </a>
+      {% else %}
+      <a href="{{url_for('main.search', page=pagenum, keyword=keyword)}}" aria-label="Previous">
+	<span aria-hidden="true">&raquo;</span>
+      </a>
+      {% endif %}
+    </li>
+    
+  </ul>
+  </nav>
+{% endblock %}
+
