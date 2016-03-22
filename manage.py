@@ -26,7 +26,7 @@ def test():
 @manager.command
 def runtornado():
     http_server = HTTPServer(WSGIContainer(app))
-    http_server.listen(5050)
+    http_server.listen(5060)
     IOLoop.instance().start()
 
 if __name__ == '__main__':
