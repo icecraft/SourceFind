@@ -102,8 +102,11 @@
 			  <span class="glyphicon glyphicon-search" aria-hidden="true" style="color:white"></span>
 			</button>
 	  </form>
-	  
-        </div>
+	  <ul class="nav navbar-nav">
+	    <li><a href="{{ url_for('main.index') }}">首页</a></li>
+	    <li><a href="{{ url_for('main.setting') }}">设置</a></li>
+	  </ul>
+	</div>
     </div>	
     <div class="col-md-1"></div>
   </div>

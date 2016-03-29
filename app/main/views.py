@@ -2,7 +2,7 @@
 from flask import render_template, session, redirect, url_for, current_app, request
 from . import main
 from flask.ext.login import login_required, current_user
-
+from .forms import settingForm
 
 @main.route('/', methods=['GET', 'POST'])
 @main.route('/index', methods=['GET', 'POST'])
@@ -16,7 +16,26 @@ def show_py():
     with open(filen) as f:
         contents = f.readlines()
     return render_template("main/show_py.html", contents = contents)
+
+@main.route('/setting', methods=['GET', 'POST'])
+def setting():
+    form = settingForm()
+    if form.validate_on_submit():
+        tmp_l = [ i for i in form.body.data.split(',') ]
+	current_app.config.update(lib_search_path=tmp_l)		
+        return redirect(url_for('main.index'))
+    def format_str(ss):
+        tmp_l = map(lambda x:str(x).strip('u')
+                    if type(x) == unicode else str(x), ss)
+        return ', '.join(tmp_l)
+                    
+    form.body.data =  format_str(current_app.config['lib_search_path']) \
+                          if  'lib_search_path' in current_app.config  \
+                              else format_str(current_app.config['SITE_PY'])
+    return render_template('main/lib_setting.html', form=form)
     
+
+
 @main.route('/search', methods=['GET', 'POST'])
 def search():
     page = request.args.get('page', 1, type=int)
@@ -39,7 +58,9 @@ def search():
 def search_aux(keyword):
     filelists = []
     import subprocess
-    for dirname in current_app.config['SITE_PY']:
+    for dirname in  current_app.config['lib_search_path'] if 'lib_search_path' in current_app.config\
+                              else current_app.config['SITE_PY']:
+        print "dirname", dirname
         proc =  subprocess.Popen(["grep", "-R", "-l","--include=*.py",
                                   keyword, dirname], stdout=subprocess.PIPE)
         filelist = [ filen for filen in proc.stdout ]
@@ -52,3 +73,4 @@ def search_aux(keyword):
             pass
         
     return filelists
+
